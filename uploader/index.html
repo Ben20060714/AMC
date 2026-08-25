@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AMC PRODUCTION</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes float-soft {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-10px) scale(1.04);
+        }
+      }
+
+      @keyframes wave-slide {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        50% {
+          transform: translateX(-18px);
+        }
+      }
+
+      .animate-fade-up {
+        animation: fade-up 700ms ease-out both;
+      }
+
+      .animate-float-soft {
+        animation: float-soft 5s ease-in-out infinite;
+      }
+
+      .animate-wave-slide {
+        animation: wave-slide 6s ease-in-out infinite;
+      }
+
+      .transition-wipe {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        background: linear-gradient(135deg, #fb923c, #f43f5e, #ec4899);
+        transform: translateX(100%);
+        transition: transform 520ms cubic-bezier(0.76, 0, 0.24, 1);
+      }
+
+      .transition-wipe.is-active {
+        transform: translateX(0);
+      }
+
+      .page-slide-out {
+        transform: translateX(-28%);
+        opacity: 0.35;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-rose-50 text-neutral-900 transition-all duration-500 ease-out">
+    <main
+      id="home-page"
+      class="mx-auto flex min-h-screen max-w-md flex-col justify-center px-5 py-10 transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]"
+    >
+      <section class="animate-fade-up overflow-hidden rounded-3xl bg-white shadow-2xl shadow-rose-200/70">
+        <div class="relative h-48 bg-gradient-to-br from-orange-400 via-rose-500 to-pink-500">
+          <div class="animate-float-soft absolute left-8 top-8 h-16 w-16 rounded-full bg-white/20"></div>
+          <div class="animate-float-soft absolute right-10 top-14 h-24 w-24 rounded-full bg-white/15 [animation-delay:900ms]"></div>
+          <svg
+            class="animate-wave-slide absolute bottom-[-1px] left-0 h-24 w-[115%] text-white"
+            viewBox="0 0 390 120"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M0 48c42 30 84 33 126 8 47-28 91-29 135 0 39 26 82 25 129-3v67H0V48Z"
+              fill="currentColor"
+              opacity="0.96"
+            ></path>
+            <path
+              d="M0 72c54 20 101 17 142-9 49-31 94-26 134 4 35 26 73 31 114 12v41H0V72Z"
+              fill="currentColor"
+            ></path>
+          </svg>
+        </div>
+
+        <div class="px-6 pb-7 pt-6">
+          <div class="mb-5 h-1.5 w-16 rounded-full bg-gradient-to-r from-orange-400 to-rose-500"></div>
+
+          <h1 class="text-3xl font-bold leading-tight text-neutral-950">
+            Bienvenue chez AMC Production
+          </h1>
+
+          <p class="mt-4 text-sm leading-7 text-neutral-500">
+            Envoyez facilement votre prod depuis ce formulaire simple et rapide.
+          </p>
+
+          <a
+            id="start-link"
+            href="audio-upload-form.html"
+            class="mt-8 inline-flex h-14 w-full items-center justify-center rounded-2xl bg-gradient-to-r from-orange-400 via-rose-500 to-pink-500 px-6 text-sm font-bold text-white shadow-lg shadow-rose-500/25 transition duration-300 hover:-translate-y-1 hover:scale-[1.01] hover:shadow-xl hover:shadow-rose-500/30 focus:outline-none focus:ring-4 focus:ring-rose-500/30 active:translate-y-0 active:scale-[0.99]"
+          >
+            Commencer
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <div id="transition-wipe" class="transition-wipe"></div>
+
+    <script>
+      const startLink = document.querySelector("#start-link");
+      const homePage = document.querySelector("#home-page");
+      const transitionWipe = document.querySelector("#transition-wipe");
+
+      startLink.addEventListener("click", function (event) {
+        event.preventDefault();
+        homePage.classList.add("page-slide-out");
+        transitionWipe.classList.add("is-active");
+
+        setTimeout(function () {
+          window.location.href = startLink.href;
+        }, 520);
+      });
+    </script>
+  </body>
+</html>

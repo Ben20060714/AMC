@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AMC - Formulaire d'envoi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulse-border {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgb(244 63 94 / 0.18);
+        }
+        50% {
+          box-shadow: 0 0 0 8px rgb(244 63 94 / 0.04);
+        }
+      }
+
+      .animate-fade-up {
+        animation: fade-up 700ms ease-out both;
+      }
+
+      .animate-pulse-border {
+        animation: pulse-border 2.6s ease-in-out infinite;
+      }
+
+      .page-enter {
+        opacity: 0;
+        transform: translateX(24%);
+      }
+
+      .is-visible {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .transition-wipe {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        background: linear-gradient(135deg, #fb923c, #f43f5e, #ec4899);
+        transform: translateX(0);
+        transition: transform 620ms cubic-bezier(0.76, 0, 0.24, 1);
+      }
+
+      .transition-wipe.is-hidden {
+        transform: translateX(-100%);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-rose-50 px-4 py-10 text-neutral-900">
+    <main class="mx-auto flex min-h-[calc(100vh-5rem)] max-w-md items-center justify-center">
+      <form
+        id="audio-form"
+        action="/upload"
+        method="post"
+        enctype="multipart/form-data"
+        class="page-enter w-full rounded-3xl bg-white p-6 shadow-2xl shadow-rose-200/70 transition-all duration-500 ease-out"
+      >
+        <div class="mb-8">
+          <p class="text-sm font-semibold uppercase tracking-wide text-rose-500">
+            Envoi de fichier
+          </p>
+          <h1 class="mt-2 text-3xl font-bold text-neutral-950">
+            Fichier audio
+          </h1>
+          <div class="mt-3 h-1.5 w-20 rounded-full bg-gradient-to-r from-orange-400 to-rose-500"></div>
+        </div>
+
+        <div class="space-y-5">
+          <label for="nom" class="block">
+            <span class="mb-2 block text-sm font-semibold text-neutral-700">
+              Nom compet
+            </span>
+            <input
+              id="nom"
+              name="nom"
+              type="text"
+              required
+              placeholder="Votre nom complet"
+              class="h-12 w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 text-sm font-medium outline-none transition duration-300 placeholder:text-neutral-400 focus:-translate-y-0.5 focus:border-rose-500 focus:bg-white focus:ring-4 focus:ring-rose-500/10"
+            />
+          </label>
+
+          <label for="whatsapp" class="block">
+            <span class="mb-2 block text-sm font-semibold text-neutral-700">
+              Numéro WhatsApp
+            </span>
+            <input
+              id="whatsapp"
+              name="whatsapp"
+              type="tel"
+              required
+              placeholder="+243 000 000 000"
+              class="h-12 w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 text-sm font-medium outline-none transition duration-300 placeholder:text-neutral-400 focus:-translate-y-0.5 focus:border-rose-500 focus:bg-white focus:ring-4 focus:ring-rose-500/10"
+            />
+          </label>
+
+          <label for="audio" class="block">
+            <span class="mb-2 block text-sm font-semibold text-neutral-700">
+              Fichier audio
+            </span>
+            <div class="animate-pulse-border rounded-2xl border-2 border-dashed border-rose-300 bg-rose-50 px-5 py-8 text-center transition duration-300 hover:-translate-y-1 hover:border-rose-500 hover:bg-white">
+              <input
+                id="audio"
+                name="audio"
+                type="file"
+                accept=".mp3,.wav,audio/mpeg,audio/wav"
+                required
+                class="block w-full cursor-pointer text-sm text-neutral-600 file:mr-4 file:rounded-xl file:border-0 file:bg-gradient-to-r file:from-orange-400 file:to-rose-500 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-white hover:file:opacity-90"
+              />
+              <p id="file-name" class="mt-3 text-xs text-neutral-500 transition-all duration-300">
+                Formats acceptés : MP3 ou WAV
+              </p>
+            </div>
+          </label>
+        </div>
+
+        <button
+          id="submit-button"
+          type="submit"
+          class="mt-8 h-13 w-full rounded-2xl bg-gradient-to-r from-orange-400 via-rose-500 to-pink-500 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-rose-500/25 transition duration-300 hover:-translate-y-1 hover:scale-[1.01] hover:shadow-xl hover:shadow-rose-500/30 focus:outline-none focus:ring-4 focus:ring-rose-500/30 active:translate-y-0 active:scale-[0.99]"
+        >
+          Envoyer le fichier
+        </button>
+
+        <p
+          id="form-message"
+          class="mt-4 min-h-5 text-center text-sm font-medium text-rose-600 opacity-0 transition-all duration-300"
+        ></p>
+      </form>
+    </main>
+
+    <div id="transition-wipe" class="transition-wipe"></div>
+
+    <script>
+      const form = document.querySelector("#audio-form");
+      const audioInput = document.querySelector("#audio");
+      const fileName = document.querySelector("#file-name");
+      const submitButton = document.querySelector("#submit-button");
+      const message = document.querySelector("#form-message");
+      const transitionWipe = document.querySelector("#transition-wipe");
+
+      window.addEventListener("load", function () {
+        requestAnimationFrame(function () {
+          form.classList.add("is-visible");
+          transitionWipe.classList.add("is-hidden");
+        });
+      });
+
+      audioInput.addEventListener("change", function () {
+        const file = audioInput.files[0];
+
+        if (!file) {
+          fileName.textContent = "Formats acceptés : MP3 ou WAV";
+          return;
+        }
+
+        fileName.textContent = "Fichier sélectionné : " + file.name;
+        fileName.classList.remove("text-neutral-500");
+        fileName.classList.add("text-rose-600", "font-semibold");
+      });
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+
+        submitButton.textContent = "Envoi en cours...";
+        submitButton.disabled = true;
+        submitButton.classList.add("opacity-80", "cursor-not-allowed");
+
+        message.textContent = "Votre fichier est prêt à être transmis.";
+        message.classList.remove("opacity-0");
+        message.classList.add("opacity-100", "translate-y-0");
+
+        /*
+          Exemple pour envoyer vers un backend Node.js :
+
+          fetch("/upload", {
+            method: "POST",
+            body: formData,
+          });
+        */
+
+        console.log("FormData prêt :", Object.fromEntries(formData.entries()));
+      });
+    </script>
+  </body>
+</html>
