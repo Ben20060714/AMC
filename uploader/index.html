@@ -66,52 +66,94 @@
         transform: translateX(-28%);
         opacity: 0.35;
       }
+
+      .destination-card {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .destination-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.35), transparent 60%);
+        opacity: 0;
+        transition: opacity 250ms ease;
+      }
+
+      .destination-card:hover::before {
+        opacity: 1;
+      }
     </style>
   </head>
-  <body class="min-h-screen bg-rose-50 text-neutral-900 transition-all duration-500 ease-out">
+  <body class="min-h-screen bg-gradient-to-br from-rose-50 via-white to-orange-50 text-neutral-900 transition-all duration-500 ease-out">
+    <div class="pointer-events-none absolute inset-0 overflow-hidden">
+      <div class="animate-float-soft absolute -left-8 top-10 h-32 w-32 rounded-full bg-orange-200/40 blur-2xl"></div>
+      <div class="animate-float-soft absolute right-8 top-20 h-40 w-40 rounded-full bg-rose-200/50 blur-3xl [animation-delay:900ms]"></div>
+      <div class="animate-float-soft absolute bottom-10 left-1/2 h-36 w-36 -translate-x-1/2 rounded-full bg-pink-200/50 blur-3xl [animation-delay:1400ms]"></div>
+    </div>
+
     <main
-      id="home-page"
-      class="mx-auto flex min-h-screen max-w-md flex-col justify-center px-5 py-10 transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]"
+      id="gateway-page"
+      class="relative z-10 mx-auto flex min-h-screen max-w-5xl items-center justify-center px-5 py-10 transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]"
     >
-      <section class="animate-fade-up overflow-hidden rounded-3xl bg-white shadow-2xl shadow-rose-200/70">
-        <div class="relative h-48 bg-gradient-to-br from-orange-400 via-rose-500 to-pink-500">
-          <div class="animate-float-soft absolute left-8 top-8 h-16 w-16 rounded-full bg-white/20"></div>
-          <div class="animate-float-soft absolute right-10 top-14 h-24 w-24 rounded-full bg-white/15 [animation-delay:900ms]"></div>
-          <svg
-            class="animate-wave-slide absolute bottom-[-1px] left-0 h-24 w-[115%] text-white"
-            viewBox="0 0 390 120"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M0 48c42 30 84 33 126 8 47-28 91-29 135 0 39 26 82 25 129-3v67H0V48Z"
-              fill="currentColor"
-              opacity="0.96"
-            ></path>
-            <path
-              d="M0 72c54 20 101 17 142-9 49-31 94-26 134 4 35 26 73 31 114 12v41H0V72Z"
-              fill="currentColor"
-            ></path>
-          </svg>
+      <section class="animate-fade-up w-full overflow-hidden rounded-[2rem] border border-white/70 bg-white/80 p-6 shadow-[0_30px_80px_rgba(251,113,133,0.16)] backdrop-blur-sm md:p-8">
+        <div class="text-center">
+          <div class="mx-auto mb-4 h-1.5 w-20 rounded-full bg-gradient-to-r from-orange-400 to-rose-500"></div>
+          <p class="text-[11px] font-semibold uppercase tracking-[0.35em] text-rose-500">AMC Production</p>
+          <h1 class="mt-4 text-3xl font-black text-neutral-950 sm:text-4xl md:text-5xl">
+            Choisissez votre destination
+          </h1>
+          <p class="mx-auto mt-4 max-w-xl text-sm leading-7 text-neutral-500 md:text-base">
+            Accédez rapidement au site principal ou envoyez votre fichier audio depuis le formulaire dédié.
+          </p>
         </div>
 
-        <div class="px-6 pb-7 pt-6">
-          <div class="mb-5 h-1.5 w-16 rounded-full bg-gradient-to-r from-orange-400 to-rose-500"></div>
+        <div class="mt-8 grid gap-5 md:grid-cols-2">
+          <a
+            href="../site.html"
+            data-target="../site.html"
+            class="destination-card group flex min-h-[260px] flex-col justify-between rounded-[1.75rem] border border-orange-100 bg-gradient-to-br from-orange-100 via-orange-50 to-rose-50 p-6 text-left shadow-lg shadow-orange-100/60 transition duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-orange-200/70 focus:outline-none focus:ring-4 focus:ring-orange-300/40"
+          >
+            <div>
+              <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-sm font-black text-orange-500 shadow-sm">
+                01
+              </span>
+              <h2 class="mt-5 text-2xl font-bold text-neutral-950">Site principal</h2>
+              <p class="mt-3 text-sm leading-7 text-neutral-600">
+                Ouvrez la page d’accueil du site, vide et prête à recevoir votre contenu.
+              </p>
+            </div>
 
-          <h1 class="text-3xl font-bold leading-tight text-neutral-950">
-            Bienvenue chez AMC Production
-          </h1>
-
-          <p class="mt-4 text-sm leading-7 text-neutral-500">
-            Envoyez facilement votre prod depuis ce formulaire simple et rapide.
-          </p>
+            <div class="mt-6 inline-flex items-center text-sm font-bold text-orange-600">
+              Accéder
+              <svg class="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M3 10a1 1 0 0 1 1-1h9.586l-3.293-3.293a1 1 0 1 1 1.414-1.414l5 5a1 1 0 0 1 0 1.414l-5 5a1 1 0 1 1-1.414-1.414L13.586 11H4a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+          </a>
 
           <a
-            id="start-link"
             href="audio-upload-form.html"
-            class="mt-8 inline-flex h-14 w-full items-center justify-center rounded-2xl bg-gradient-to-r from-orange-400 via-rose-500 to-pink-500 px-6 text-sm font-bold text-white shadow-lg shadow-rose-500/25 transition duration-300 hover:-translate-y-1 hover:scale-[1.01] hover:shadow-xl hover:shadow-rose-500/30 focus:outline-none focus:ring-4 focus:ring-rose-500/30 active:translate-y-0 active:scale-[0.99]"
+            data-target="audio-upload-form.html"
+            class="destination-card group flex min-h-[260px] flex-col justify-between rounded-[1.75rem] border border-rose-100 bg-gradient-to-br from-rose-100 via-pink-50 to-fuchsia-50 p-6 text-left shadow-lg shadow-rose-100/60 transition duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-rose-200/70 focus:outline-none focus:ring-4 focus:ring-rose-300/40"
           >
-            Commencer
+            <div>
+              <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-sm font-black text-rose-500 shadow-sm">
+                02
+              </span>
+              <h2 class="mt-5 text-2xl font-bold text-neutral-950">Uploader</h2>
+              <p class="mt-3 text-sm leading-7 text-neutral-600">
+                Soumettez votre production audio en quelques secondes via le formulaire dédié.
+              </p>
+            </div>
+
+            <div class="mt-6 inline-flex items-center text-sm font-bold text-rose-600">
+              Envoyer
+              <svg class="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M3 10a1 1 0 0 1 1-1h9.586l-3.293-3.293a1 1 0 1 1 1.414-1.414l5 5a1 1 0 0 1 0 1.414l-5 5a1 1 0 1 1-1.414-1.414L13.586 11H4a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+              </svg>
+            </div>
           </a>
         </div>
       </section>
@@ -120,18 +162,20 @@
     <div id="transition-wipe" class="transition-wipe"></div>
 
     <script>
-      const startLink = document.querySelector("#start-link");
-      const homePage = document.querySelector("#home-page");
+      const gatewayPage = document.querySelector("#gateway-page");
       const transitionWipe = document.querySelector("#transition-wipe");
+      const destinationLinks = document.querySelectorAll("[data-target]");
 
-      startLink.addEventListener("click", function (event) {
-        event.preventDefault();
-        homePage.classList.add("page-slide-out");
-        transitionWipe.classList.add("is-active");
+      destinationLinks.forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          gatewayPage.classList.add("page-slide-out");
+          transitionWipe.classList.add("is-active");
 
-        setTimeout(function () {
-          window.location.href = startLink.href;
-        }, 520);
+          setTimeout(function () {
+            window.location.href = link.dataset.target;
+          }, 520);
+        });
       });
     </script>
   </body>
